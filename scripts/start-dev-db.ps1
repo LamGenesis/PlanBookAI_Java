@@ -94,8 +94,8 @@ Write-Host "CONNECTION INFO:" -ForegroundColor Cyan
 Write-Host "  Host/IP: localhost" -ForegroundColor White
 Write-Host "  Port: 5432" -ForegroundColor White
 Write-Host "  Database: planbookai" -ForegroundColor White
-Write-Host "  Username: test" -ForegroundColor White
-Write-Host "  Password: test123" -ForegroundColor White
+Write-Host "  Username: caesar" -ForegroundColor White
+Write-Host "  Password: 290304" -ForegroundColor White
 Write-Host ""
 Write-Host "JDBC URL FOR SPRING BOOT:" -ForegroundColor Cyan
 Write-Host "  jdbc:postgresql://localhost:5432/planbookai" -ForegroundColor White
