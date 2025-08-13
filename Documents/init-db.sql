@@ -1,9 +1,4 @@
--- PlanbookAI Development Database Migration Script
--- Tạo database schemas và tables theo Domain Driven Design
 
--- ==============================================
--- 1. TẠO SCHEMAS CHO CÁC BOUNDED CONTEXTS
--- ==============================================
 
 CREATE SCHEMA IF NOT EXISTS users;           -- User Management Context
 CREATE SCHEMA IF NOT EXISTS content;         -- Educational Content Context  
@@ -16,9 +11,7 @@ GRANT ALL PRIVILEGES ON SCHEMA content TO test;
 GRANT ALL PRIVILEGES ON SCHEMA assessment TO test;
 GRANT ALL PRIVILEGES ON SCHEMA students TO test;
 
--- ==============================================
--- 2. USER MANAGEMENT DOMAIN TABLES
--- ==============================================
+
 
 -- Bảng vai trò người dùng
 CREATE TABLE IF NOT EXISTS users.roles (
@@ -55,10 +48,6 @@ CREATE TABLE IF NOT EXISTS users.sessions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ==============================================
--- 3. EDUCATIONAL CONTENT DOMAIN TABLES
--- ==============================================
-
 -- Bảng mẫu giáo án
 CREATE TABLE IF NOT EXISTS content.lesson_templates (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -88,9 +77,6 @@ CREATE TABLE IF NOT EXISTS content.lesson_plans (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ==============================================
--- 4. ASSESSMENT DOMAIN TABLES
--- ==============================================
 
 -- Bảng câu hỏi
 CREATE TABLE IF NOT EXISTS assessment.questions (
@@ -143,9 +129,6 @@ CREATE TABLE IF NOT EXISTS assessment.exam_questions (
     UNIQUE(exam_id, question_order)
 );
 
--- ==============================================
--- 5. STUDENT DATA DOMAIN TABLES
--- ==============================================
 
 -- Bảng lớp học
 CREATE TABLE IF NOT EXISTS students.classes (
@@ -189,10 +172,6 @@ CREATE TABLE IF NOT EXISTS students.student_results (
     graded_at TIMESTAMP
 );
 
--- ==============================================
--- 6. INDEXES ĐỂ TỐI ƯU HIỆU SUẤT
--- ==============================================
-
 -- User Management indexes
 CREATE INDEX IF NOT EXISTS idx_users_email ON users.users(email);
 CREATE INDEX IF NOT EXISTS idx_users_role ON users.users(role_id);
@@ -218,9 +197,6 @@ CREATE INDEX IF NOT EXISTS idx_students_code ON students.students(student_code);
 CREATE INDEX IF NOT EXISTS idx_student_results_student ON students.student_results(student_id);
 CREATE INDEX IF NOT EXISTS idx_student_results_exam ON students.student_results(exam_id);
 
--- ==============================================
--- 7. DỮ LIỆU MẪU CHO DEVELOPMENT
--- ==============================================
 
 -- Thêm các vai trò cơ bản
 INSERT INTO users.roles (name, description) VALUES
@@ -252,9 +228,6 @@ CREATE TABLE IF NOT EXISTS public.kiem_tra_ket_noi (
 INSERT INTO public.kiem_tra_ket_noi (service_name, status) VALUES
 ('PlanbookAI Development Setup', 'SUCCESS');
 
--- ==============================================
--- 8. FUNCTIONS VÀ TRIGGERS
--- ==============================================
 
 -- Function để tự động update timestamp
 CREATE OR REPLACE FUNCTION update_modified_column()
@@ -271,9 +244,6 @@ CREATE TRIGGER update_lesson_plans_modtime BEFORE UPDATE ON content.lesson_plans
 CREATE TRIGGER update_exams_modtime BEFORE UPDATE ON assessment.exams FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 CREATE TRIGGER update_students_modtime BEFORE UPDATE ON students.students FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 
--- ==============================================
--- HOÀN THÀNH MIGRATION
--- ==============================================
 
 -- Log migration completion
 INSERT INTO public.kiem_tra_ket_noi (service_name, status) VALUES
