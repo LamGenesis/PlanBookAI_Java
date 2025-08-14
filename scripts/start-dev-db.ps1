@@ -40,7 +40,7 @@ if ($containerExists) {
     }
 } else {
     Write-Host "[INFO] Creating new PostgreSQL container..." -ForegroundColor Yellow
-    docker run -d --name planbookai-postgres-dev -e POSTGRES_DB=postgres -e POSTGRES_USER=test -e POSTGRES_PASSWORD=test123 -p 5432:5432 postgres:17
+    docker run -d --name planbookai-postgres-dev -e POSTGRES_DB=postgres -e POSTGRES_USER=test -e POSTGRES_PASSWORD=test123 -p 5430:5432 postgres:17
     if ($LASTEXITCODE -ne 0) {
         Write-Host "[ERROR] Failed to create container. Check Docker Desktop" -ForegroundColor Red
         Write-Host ""
@@ -92,13 +92,13 @@ Write-Host "=======================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "CONNECTION INFO:" -ForegroundColor Cyan
 Write-Host "  Host/IP: localhost" -ForegroundColor White
-Write-Host "  Port: 5432" -ForegroundColor White
+Write-Host "  Port: 5430" -ForegroundColor White
 Write-Host "  Database: planbookai" -ForegroundColor White
-Write-Host "  Username: caesar" -ForegroundColor White
-Write-Host "  Password: 290304" -ForegroundColor White
+Write-Host "  Username: test" -ForegroundColor White
+Write-Host "  Password: test123" -ForegroundColor White
 Write-Host ""
 Write-Host "JDBC URL FOR SPRING BOOT:" -ForegroundColor Cyan
-Write-Host "  jdbc:postgresql://localhost:5432/planbookai" -ForegroundColor White
+Write-Host "  jdbc:postgresql://localhost:5430/planbookai" -ForegroundColor White
 Write-Host ""
 Write-Host "DATABASE SCHEMAS (DDD):" -ForegroundColor Cyan
 Write-Host "  [OK] users - User Management Context" -ForegroundColor Green

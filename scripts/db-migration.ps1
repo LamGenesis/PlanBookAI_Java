@@ -17,10 +17,10 @@ Write-Host "[INFO] PostgreSQL container is running" -ForegroundColor Green
 
 # Database connection parameters
 $DB_HOST = "localhost"
-$DB_PORT = "5432"
+$DB_PORT = "5430"
 $DB_NAME = "planbookai"
-$DB_USER = "caesar"
-$DB_PASSWORD = "290304"
+$DB_USER = "test"
+$DB_PASSWORD = "test123"
 
 # Function to execute SQL command
 function Execute-SQL {
