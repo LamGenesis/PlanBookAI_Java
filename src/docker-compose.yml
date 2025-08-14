@@ -29,7 +29,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
+      - DB_PORT=5430
       - DB_NAME=planbookai_auth
     depends_on:
       - postgres
@@ -46,7 +46,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
+      - DB_PORT=5430
       - DB_NAME=planbookai_user
     depends_on:
       - postgres
@@ -63,7 +63,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
+      - DB_PORT=5430
       - DB_NAME=planbookai_plan
     depends_on:
       - postgres
@@ -80,7 +80,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
+      - DB_PORT=5430
       - DB_NAME=planbookai_task
     depends_on:
       - postgres
