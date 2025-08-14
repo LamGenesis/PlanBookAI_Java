@@ -15,7 +15,7 @@ Chuột phải: `scripts/stop-dev-db.ps1` chọn "Run with PowerShell"
 ## Connection Info
 
 - Host: localhost
-- Port: 5432
+- Port: 5430
 - Database: planbookai
 - Username: test
 - Password: test123
