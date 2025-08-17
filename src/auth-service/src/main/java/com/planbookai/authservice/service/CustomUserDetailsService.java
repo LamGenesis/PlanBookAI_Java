@@ -1,27 +1,36 @@
 package com.planbookai.authservice.service;
 
-import com.planbookai.authservice.entity.User;
-import com.planbookai.authservice.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.planbookai.authservice.entity.NguoiDung;
+import com.planbookai.authservice.repository.KhoNguoiDung;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Service
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+
+    private final KhoNguoiDung khoNguoiDung;
+    
+
+    public CustomUserDetailsService(KhoNguoiDung khoNguoiDung) {
+        this.khoNguoiDung = khoNguoiDung;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User u = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-        return new org.springframework.security.core.userdetails.User(
-                u.getUsername(),
-                u.getPassword(),
-                u.getRoles().stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(Collectors.toSet())
-        );
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        NguoiDung nguoiDung = khoNguoiDung.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với email: " + email));
+
+        return User.builder()
+                .username(nguoiDung.getEmail())
+                .password(nguoiDung.getMatKhauMaHoa())
+                .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + nguoiDung.getVaiTro().name())))
+                .accountLocked(!nguoiDung.getTrangThaiHoatDong())
+                .build();
     }
 }
