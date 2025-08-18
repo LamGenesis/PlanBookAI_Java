@@ -25,7 +25,7 @@ public class DichVuNguoiDung {
         return khoThongTinNguoiDung.findAll(pageable);
     }
 
-    // ✅ Nhận trực tiếp DTO từ controller
+    
     public ThongTinNguoiDung taoNguoiDung(YeuCauTaoNguoiDung yeuCau) {
         ThongTinNguoiDung nguoiDung = new ThongTinNguoiDung();
         nguoiDung.setEmail(yeuCau.getEmail());
@@ -35,7 +35,6 @@ public class DichVuNguoiDung {
         return khoThongTinNguoiDung.save(nguoiDung);
     }
 
-    // Nếu muốn cho phép tạo trực tiếp bằng Entity
     public ThongTinNguoiDung taoNguoiDung(ThongTinNguoiDung nguoiDung) {
         nguoiDung.setMatKhau(passwordEncoder.encode(nguoiDung.getMatKhau()));
         return khoThongTinNguoiDung.save(nguoiDung);
