@@ -1,5 +1,6 @@
 package com.planbookai.userservice.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class ThongTinNguoiDung {
     private String email;
 
     private String matKhau;
+    private LocalDateTime thoiGianCapNhat;
 
     @Builder.Default
     private Boolean trangThai = true;
