@@ -19,5 +19,7 @@ public class YeuCauTaoNguoiDung {
     @NotBlank
     private String matKhau;
     private String vaiTro;
+    private Boolean trangThaiHoatDong = true;
+
 }
 

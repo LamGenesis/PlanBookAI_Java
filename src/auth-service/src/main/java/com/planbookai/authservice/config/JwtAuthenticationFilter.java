@@ -23,10 +23,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final DichVuJWT dichVuJWT;
     private final CustomUserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter() {
-        this.dichVuJWT = null;
-        this.userDetailsService = null;
-    }
 
     @Override
     protected void doFilterInternal(
