@@ -8,6 +8,7 @@ import com.planbookai.authservice.repository.KhoPhienDangNhap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.planbookai.authservice.entity.VaiTro;
 
 import jakarta.transaction.Transactional;
 import java.util.Optional;
@@ -64,14 +65,34 @@ public class DichVuXacThucImpl implements DichVuXacThuc {
     @Override
     @Transactional
     public void dangXuat(String bearerToken) {
-        if (bearerToken == null) return;
+        if (bearerToken == null)
+            return;
         String token = bearerToken.replaceFirst("Bearer ", "");
-        if (!dichVuJWT.validateToken(token)) return;
+        if (!dichVuJWT.validateToken(token))
+            return;
         String email = dichVuJWT.getEmailFromToken(token);
         khoNguoiDung.findByEmail(email).ifPresent(nd -> {
             // remove all refresh tokens for user
             khoPhienDangNhap.findByNguoiDungId(nd.getId()).forEach(khoPhienDangNhap::delete);
         });
+    }
+
+    @Transactional
+    public NguoiDung dangKy(YeuCauDangKy yeuCau) {
+        if (khoNguoiDung.existsByEmail(yeuCau.getEmail())) {
+            throw new IllegalArgumentException("Email đã tồn tại");
+        }
+
+        NguoiDung nd = NguoiDung.builder()
+                .email(yeuCau.getEmail())
+                .matKhauMaHoa(passwordEncoder.encode(yeuCau.getMatKhau()))
+                .hoTen(yeuCau.getHoTen())
+                .vaiTro(VaiTro.STAFF) 
+                .trangThaiHoatDong(true)
+                .build();
+
+        khoNguoiDung.save(nd);
+        return nd;
     }
 
     @Override
@@ -119,7 +140,8 @@ public class DichVuXacThucImpl implements DichVuXacThuc {
 
     @Override
     public void validateToken(String bearerToken) {
-        if (bearerToken == null) throw new IllegalArgumentException("Token không được để trống");
+        if (bearerToken == null)
+            throw new IllegalArgumentException("Token không được để trống");
         String token = bearerToken.replaceFirst("Bearer ", "");
         if (!dichVuJWT.validateToken(token)) {
             throw new IllegalArgumentException("Token không hợp lệ hoặc hết hạn");

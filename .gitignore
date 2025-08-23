@@ -125,3 +125,4 @@ temp-files/
 ocr-cache/
 ai-cache/
 student-data/
+scripts/db-migration.ps1

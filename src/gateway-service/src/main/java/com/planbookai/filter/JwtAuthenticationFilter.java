@@ -1,6 +1,5 @@
 package com.planbookai.filter;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -23,17 +23,27 @@ public class JwtAuthenticationFilter implements GatewayFilter {
     @Value("${jwt.secret:PlanBookAI-ReplaceThisSecretWithAProperStrongSecretKey!}")
     private String secret;
 
+    // Danh sách public path, không cần JWT
+    private final List<String> PUBLIC_PATHS = List.of(
+            "/api/xac-thuc",
+            "/api/quen-mat-khau",
+            "/actuator"
+    );
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
         log.info("Incoming request path: {}", path);
 
-        // ✅ Bypass các endpoint public
-        if (path.contains("/xac-thuc") || path.contains("/quen-mat-khau")) {
-            return chain.filter(exchange);
+        // ✅ Bypass endpoint public
+        for (String publicPath : PUBLIC_PATHS) {
+            if (path.startsWith(publicPath)) {
+                log.info("Bypassing JWT check for public path: {}", path);
+                return chain.filter(exchange);
+            }
         }
 
-        // ✅ Check Authorization header
+        // ✅ Kiểm tra Authorization header
         String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             log.warn("Missing or invalid Authorization header for path: {}", path);
@@ -44,17 +54,9 @@ public class JwtAuthenticationFilter implements GatewayFilter {
         String token = authHeader.substring(7);
         try {
             Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 
-            String email = claims.getSubject();
-            exchange = exchange.mutate().request(
-                    r -> r.headers(h -> h.add("X-User-Email", email))
-            ).build();
-
+            log.info("JWT validated successfully for path: {}", path);
             return chain.filter(exchange);
 
         } catch (Exception e) {
