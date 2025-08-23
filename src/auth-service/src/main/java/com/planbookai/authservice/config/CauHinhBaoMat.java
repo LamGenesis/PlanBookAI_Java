@@ -4,7 +4,6 @@ import com.planbookai.authservice.service.CustomUserDetailsService;
 import com.planbookai.authservice.service.DichVuJWT;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -33,8 +32,8 @@ public class CauHinhBaoMat {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .httpBasic(httpBasic -> httpBasic.disable()) // ⚡ Tắt Basic Auth
-                .formLogin(form -> form.disable()) // ⚡ Tắt form login
+                .httpBasic(httpBasic -> httpBasic.disable()) 
+                .formLogin(form -> form.disable()) 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/xac-thuc/**", "/api/quen-mat-khau/**", "/actuator/**").permitAll()
