@@ -3,6 +3,8 @@ package com.planbookai.taskservice.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 /**
  * Entity LuaChonCauHoi - Lựa chọn cho câu hỏi trắc nghiệm
@@ -20,8 +22,9 @@ public class LuaChonCauHoi {
     @JoinColumn(name = "question_id", nullable = false)
     private CauHoi cauHoi;
     
-    @Column(name = "choice_order", nullable = false, length = 1)
-    private String thuTu; // A, B, C, D
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "choice_order", nullable = false,  length = 1)
+	private String thuTu; // A, B, C, D
     
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String noiDung;

@@ -56,7 +56,6 @@ public class DeThi {
     
     // Constructors
     public DeThi() {
-        this.id = UUID.randomUUID();
         this.thoiGianTao = LocalDateTime.now();
         this.thoiGianCapNhat = LocalDateTime.now();
         this.trangThai = "DRAFT";
