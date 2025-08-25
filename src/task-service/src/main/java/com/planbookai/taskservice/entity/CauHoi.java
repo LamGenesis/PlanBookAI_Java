@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Entity CauHoi - Câu hỏi trong ngân hàng câu hỏi
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class CauHoi {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
     
@@ -54,11 +56,11 @@ public class CauHoi {
     
     // Relationship với LuaChonCauHoi (question_choices)
     @OneToMany(mappedBy = "cauHoi", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("cauHoi-luaChon")
     private List<LuaChonCauHoi> danhSachLuaChon;
     
     // Constructors
     public CauHoi() {
-        this.id = UUID.randomUUID();
         this.thoiGianTao = LocalDateTime.now();
         this.thoiGianCapNhat = LocalDateTime.now();
         this.trangThai = "ACTIVE";

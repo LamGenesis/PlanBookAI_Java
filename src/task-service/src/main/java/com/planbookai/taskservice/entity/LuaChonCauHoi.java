@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 /**
  * Entity LuaChonCauHoi - Lựa chọn cho câu hỏi trắc nghiệm
  * Khớp chính xác với table assessment.question_choices
@@ -20,6 +20,7 @@ public class LuaChonCauHoi {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
+    @JsonBackReference("cauHoi-luaChon")
     private CauHoi cauHoi;
     
     @JdbcTypeCode(SqlTypes.CHAR)
