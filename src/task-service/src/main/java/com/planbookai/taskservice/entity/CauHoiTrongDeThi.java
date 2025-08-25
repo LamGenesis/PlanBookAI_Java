@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "exam_questions", schema = "assessment",
        uniqueConstraints = @UniqueConstraint(columnNames = {"exam_id", "question_order"}))
@@ -17,9 +17,10 @@ public class CauHoiTrongDeThi {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_id", nullable = false)
+    @JsonBackReference("deThi-cauHoi")
     private DeThi deThi;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id", nullable = false)
     private CauHoi cauHoi;
     
@@ -33,7 +34,6 @@ public class CauHoiTrongDeThi {
     private LocalDateTime thoiGianTao;
     
     public CauHoiTrongDeThi() {
-        this.id = UUID.randomUUID();
         this.thoiGianTao = LocalDateTime.now();
     }
     

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 /**
  * Entity DeThi - Đề thi (Aggregate Root)
  * Khớp với table assessment.exams
@@ -51,7 +51,8 @@ public class DeThi {
     private LocalDateTime thoiGianCapNhat;
     
     // Relationship với CauHoiTrongDeThi
-    @OneToMany(mappedBy = "deThi", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "deThi", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference("deThi-cauHoi")
     private List<CauHoiTrongDeThi> danhSachCauHoi;
     
     // Constructors
